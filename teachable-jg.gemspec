@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{A convenient wrapper for the valid endpoints of Teachable Mock API}
   spec.description   = %q{A convenient wrapper for the valid endpoints of Teachable Mock API}
-  spec.homepage      = "https::www.cnn.com" # place holder for now
+  spec.homepage      = "https://www.cnn.com" # place holder for now
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # if spec.respond_to?(:metadata)
-  #   spec.metadata['allowed_push_host'] = "http://mygemserver.com"  # place holder for now
+  #   spec.metadata['allowed_push_host'] = "https://mygemserver.com"  # place holder for now
   # end
 
   spec.add_development_dependency "bundler", "~> 1.9"
