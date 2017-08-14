@@ -1,19 +1,17 @@
 module Teachable
   module Jg
     module Configuration
-      VALID_CONNECTION_KEYS = [:endpoint, :user_agent, :method, :authorization_message, :authorized].freeze
-      VALID_OPTIONS_KEYS    = [:api_key, :format].freeze
-      VALID_CONFIG_KEYS     = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
+      VALID_CONNECTION_KEYS         = [:method, :authorization_message, :authorized].freeze
+      VALID_OPTIONS_KEYS            = [:format].freeze
 
-      DEFAULT_ENDPOINT      = 'http://secure.localhost.com:3000/users/sign-in'
-      DEFAULT_METHOD        = :post
-      DEFAULT_USER_AGENT    = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
+      VALID_CONFIG_KEYS             = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
-      DEFAULT_API_KEY       = nil
-      DEFAULT_FORMAT        = :json
-
-      DEFAULT_STATUS        = false
-      DEFAULT_MESSAGE       = ""
+      DEFAULT_ENDPOINT              = 'http://secure.localhost.com:3000/users'
+      DEFAULT_METHOD                = :post
+      DEFAULT_USER_AGENT            = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
+      DEFAULT_FORMAT                = :json
+      DEFAULT_AUTHORIZED            = false
+      DEFAULT_AUTHORIZATION_MESSAGE = ""
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml
@@ -25,18 +23,17 @@ module Teachable
       end
 
       def options
-        Hash[ * VALID_CONFIG_KEYS.map { |key| [key, send(key)] }.flatten ]
+        Hash[ * VALID_CONFIG_KEYS.map do |key|
+          self.reset
+          [key, send(key)]
+        end.flatten ]
       end
 
       def reset
-        self.endpoint   = DEFAULT_ENDPOINT
-        self.method     = DEFAULT_METHOD
-        self.user_agent = DEFAULT_USER_AGENT
-
-        self.api_key    = DEFAULT_API_KEY
-        self.format     = DEFAULT_FORMAT
-        self.authorized = DEFAULT_STATUS
-        self.authorization_message = DEFAULT_MESSAGE
+        self.method                = DEFAULT_METHOD
+        self.format                = DEFAULT_FORMAT
+        self.authorized            = DEFAULT_AUTHORIZED
+        self.authorization_message = DEFAULT_AUTHORIZATION_MESSAGE
       end
 
       def configure

@@ -22,25 +22,25 @@ describe Teachable::Jg::Client do
     it "inherits module configuration" do
       api = Teachable::Jg::Client.new
       @keys.each do |key|
-        expect(api.send(key)).to eq(key)
+        expect(api.send(key)).to eq(Teachable::Jg.send(key)) unless key == :authorization_message
       end
     end
 
     describe 'with class configuration' do
       before do
         @config = {
-          :api_key    => 'ak',
-          :format     => 'of',
-          :endpoint   => 'ep',
-          :user_agent => 'ua',
-          :method     => 'hm',
+          format:                'of',
+          endpoint:              'ep',
+          method:                'hm',
+          authorized:            'zy',
+          authorization_message: 'nn'
         }
       end
 
       it 'overrides module configuration' do
         api = Teachable::Jg::Client.new(@config)
         @keys.each do |key|
-          expect(api.send(key)).to eq(@config[key])
+          expect(api.send(key)).to eq(@config[key]) unless key == :authorization_message
         end
       end
 
@@ -52,17 +52,17 @@ describe Teachable::Jg::Client do
         end
 
         @keys.each do |key|
-          expect(api.send("#{key}")).to eq(@config[key])
+          expect(api.send("#{key}")).to eq(@config[key]) unless key == :authorization_message
         end
       end
     end
 
     describe '.authorize' do
 
-      let(:authorized) { {"success"=>true, "login"=>"verified"} }
-      let(:unrecognized) { {"success"=>true, "login"=>"unrecognized or malformed"} }
+      let(:authorized)   { {"success" =>true, "login"=>"verified"} }
+      let(:unrecognized) { {"success" =>true, "login"=>"unrecognized or malformed"} }
 
-      let(:invalid) { {"success"=>false, "login"=>"missing or invalid" } }
+      let(:invalid)      { {"success" =>false, "login"=>"missing or invalid" } }
 
       context "has user param" do
         it 'verifies login as successful' do
@@ -70,7 +70,7 @@ describe Teachable::Jg::Client do
 
 
           VCR.use_cassette('teachable_client_successful') do
-            expect(JSON.parse(tester.authorize(email: "dev-8@example.com", password: "password"))).to eq(authorized)
+            expect(tester.authorize(email: "dev-8@example.com", password: "password")).to eq(authorized)
           end
         end
 
@@ -79,7 +79,7 @@ describe Teachable::Jg::Client do
 
 
           VCR.use_cassette('teachable_client_successful_malformed1') do
-            expect(JSON.parse(tester.authorize(email: "unregistered@example.com", password: "password"))).to eq(unrecognized)
+            expect(tester.authorize(email: "unregistered@example.com", password: "password")).to eq(unrecognized)
           end
         end
 
@@ -88,7 +88,7 @@ describe Teachable::Jg::Client do
 
 
           VCR.use_cassette('teachable_client_successful_malformed2') do
-            expect(JSON.parse(tester.authorize(email: "dev-8@example.com", password: "smashword"))).to eq(unrecognized)
+            expect(tester.authorize(email: "dev-8@example.com", password: "smashword")).to eq(unrecognized)
           end
         end
       end
@@ -99,7 +99,7 @@ describe Teachable::Jg::Client do
 
 
           VCR.use_cassette('teachable_client_unsuccessful') do
-            expect(JSON.parse(tester.authorize(random: "dev-8@example.com", alsorandom: "password"))).to eq(invalid)
+            expect(tester.authorize(random: "dev-8@example.com", alsorandom: "password")).to eq(invalid)
           end
         end
       end

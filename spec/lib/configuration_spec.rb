@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'configuration' do
 
-  describe '.api_key' do
+  describe '.authorization' do
     it 'returns default key' do
-      expect(Teachable::Jg.api_key).to eq(Teachable::Jg::Configuration::DEFAULT_API_KEY)
+      expect(Teachable::Jg.authorized).to eq(Teachable::Jg::Configuration::DEFAULT_AUTHORIZED)
     end
   end
 
@@ -16,7 +16,7 @@ describe 'configuration' do
 
   describe '.user_agent' do
     it 'returns default user agent' do
-      expect(Teachable::Jg.user_agent).to eq(Teachable::Jg::Configuration::DEFAULT_USER_AGENT)
+      expect(Teachable::Jg.authorization_message).to eq(Teachable::Jg::Configuration::DEFAULT_AUTHORIZATION_MESSAGE)
     end
   end
 
