@@ -1,16 +1,19 @@
 module Teachable
   module Jg
     module Configuration
-      VALID_CONNECTION_KEYS = [:endpoint, :user_agent, :method].freeze
+      VALID_CONNECTION_KEYS = [:endpoint, :user_agent, :method, :authorization_message, :authorized].freeze
       VALID_OPTIONS_KEYS    = [:api_key, :format].freeze
       VALID_CONFIG_KEYS     = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
-      DEFAULT_ENDPOINT    = 'http://teachable.dev/api'
-      DEFAULT_METHOD      = :get
-      DEFAULT_USER_AGENT  = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
+      DEFAULT_ENDPOINT      = 'http://secure.localhost.com:3000/users/sign-in'
+      DEFAULT_METHOD        = :post
+      DEFAULT_USER_AGENT    = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
 
-      DEFAULT_API_KEY      = nil
-      DEFAULT_FORMAT       = :json
+      DEFAULT_API_KEY       = nil
+      DEFAULT_FORMAT        = :json
+
+      DEFAULT_STATUS        = false
+      DEFAULT_MESSAGE       = ""
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml
@@ -32,6 +35,8 @@ module Teachable
 
         self.api_key    = DEFAULT_API_KEY
         self.format     = DEFAULT_FORMAT
+        self.authorized = DEFAULT_STATUS
+        self.authorization_message = DEFAULT_MESSAGE
       end
 
       def configure
