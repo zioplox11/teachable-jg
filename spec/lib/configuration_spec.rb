@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'configuration' do
 
-  describe '.authorization' do
+  describe '.confirmed' do
     it 'returns default key' do
-      expect(Teachable::Jg.authorized).to eq(Teachable::Jg::Configuration::DEFAULT_AUTHORIZED)
+      expect(Teachable::Jg.confirmed).to eq(Teachable::Jg::Configuration::DEFAULT_CONFIRMED)
     end
   end
 
@@ -14,9 +14,15 @@ describe 'configuration' do
     end
   end
 
-  describe '.user_agent' do
-    it 'returns default user agent' do
-      expect(Teachable::Jg.authorization_message).to eq(Teachable::Jg::Configuration::DEFAULT_AUTHORIZATION_MESSAGE)
+  describe '.headers' do
+    it 'returns default headers' do
+      expect(Teachable::Jg.headers).to eq(Teachable::Jg::Configuration::DEFAULT_HEADERS)
+    end
+  end
+
+  describe '.status_message' do
+    it 'returns default status message' do
+      expect(Teachable::Jg.status_message).to eq(Teachable::Jg::Configuration::DEFAULT_STATUS_MESSAGE)
     end
   end
 

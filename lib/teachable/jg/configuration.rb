@@ -1,8 +1,8 @@
 module Teachable
   module Jg
     module Configuration
-      VALID_CONNECTION_KEYS         = [:method, :authorization_message, :authorized].freeze
-      VALID_OPTIONS_KEYS            = [:format].freeze
+      VALID_CONNECTION_KEYS         = [:method, :status_message, :confirmed].freeze
+      VALID_OPTIONS_KEYS            = [:format, :headers].freeze
 
       VALID_CONFIG_KEYS             = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
@@ -10,8 +10,10 @@ module Teachable
       DEFAULT_METHOD                = :post
       DEFAULT_USER_AGENT            = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
       DEFAULT_FORMAT                = :json
-      DEFAULT_AUTHORIZED            = false
-      DEFAULT_AUTHORIZATION_MESSAGE = ""
+      DEFAULT_CONFIRMED            = false
+      DEFAULT_HEADERS = { "Content-Type" => "application/json",
+                          "Accept" => "application/json" }
+      DEFAULT_STATUS_MESSAGE = ""
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml
@@ -32,8 +34,9 @@ module Teachable
       def reset
         self.method                = DEFAULT_METHOD
         self.format                = DEFAULT_FORMAT
-        self.authorized            = DEFAULT_AUTHORIZED
-        self.authorization_message = DEFAULT_AUTHORIZATION_MESSAGE
+        self.confirmed             = DEFAULT_CONFIRMED
+        self.status_message        = DEFAULT_STATUS_MESSAGE
+        self.headers               = DEFAULT_HEADERS
       end
 
       def configure
