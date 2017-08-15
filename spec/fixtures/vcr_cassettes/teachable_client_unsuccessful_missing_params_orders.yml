@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://secure.localhost.com:3000/users/sign-in?user%5Bemail%5D=dev-8@example.com&user%5Bpassword%5D=password&user%5Bpassword_confirmation%5D=
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-store, must-revalidate, private, max-age=0
+      Set-Cookie:
+      - __profilin=p%3Dt; path=/
+      - _mkra_ctxt=840d90bbd43dcfec7ce8cb2bfd0c7181--200; path=/; max-age=5; HttpOnly
+      X-Request-Id:
+      - ed8f711b-dfa1-46ed-8491-3dd1a1566de5
+      X-Runtime:
+      - '0.051192'
+      X-Miniprofiler-Ids:
+      - '["f8jw8zy37gh2w59ubnb0","4bmodk48dlhke729zgv1","efmphyk62cedyu3xnc9m","nux81lapqyt6ivko4vzj","3j404grez8ph1ndl61nt","l8i62lfp40wxy6syc1k9","sl4u5jp7p9ih2p4ffefa","o8vdqqxcz6h08etsjj1m","a702oilmu46imy4au0ya","r6z9eeiiwh12sp7veq80","tkf7966oytehys4brsbw","v6pj71ozu2sked39dcfr","tasxkalstd9ib75uhpz8","x6vgqug7bfer2hg2rzkx","tuz5qm832imclr8kh7g3","zvoavheabozeyvh4pdm0","13udoccszrevrnoz0jzq","iinodms3xad9mathaa9b","6pjwavjr5295wrybr40t","uemv8lib8l5t8dprfc63"]'
+      Connection:
+      - close
+      Server:
+      - thin
+    body:
+      encoding: UTF-8
+      string: '{"success":true,"login":"verified"}'
+    http_version: 
+  recorded_at: Tue, 15 Aug 2017 04:29:28 GMT
+recorded_with: VCR 3.0.3

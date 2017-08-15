@@ -42,7 +42,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"success":true,"login":"verified"}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 15 Aug 2017 00:13:14 GMT
 - request:
     method: get
@@ -85,6 +85,6 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"user_info":"verified","user_name":"Mike Smith","user_login":"dev-6@example.com","user_phone":"14152204981","user_registered":"2000-01-01
         20:15:01 UTC"}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 15 Aug 2017 00:13:19 GMT
 recorded_with: VCR 3.0.3
