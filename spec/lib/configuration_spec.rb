@@ -2,9 +2,15 @@ require 'spec_helper'
 
 describe 'configuration' do
 
-  describe '.confirmed' do
+  describe '.delivered' do
     it 'returns default key' do
-      expect(Teachable::Jg.confirmed).to eq(Teachable::Jg::Configuration::DEFAULT_CONFIRMED)
+      expect(Teachable::Jg.delivered).to eq(Teachable::Jg::Configuration::DEFAULT_DELIVERED)
+    end
+  end
+
+  describe '.authorized' do
+    it 'returns default key' do
+      expect(Teachable::Jg.authorized).to eq(Teachable::Jg::Configuration::DEFAULT_AUTHORIZED)
     end
   end
 

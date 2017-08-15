@@ -1,19 +1,22 @@
 module Teachable
   module Jg
     module Configuration
-      VALID_CONNECTION_KEYS         = [:method, :status_message, :confirmed].freeze
-      VALID_OPTIONS_KEYS            = [:format, :headers].freeze
+      VALID_CONNECTION_KEYS  = [:method, :status_message, :delivered].freeze
+      VALID_OPTIONS_KEYS     = [:format, :headers, :authorized].freeze
 
-      VALID_CONFIG_KEYS             = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
+      VALID_CONFIG_KEYS      = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
-      DEFAULT_ENDPOINT              = 'http://secure.localhost.com:3000/users'
-      DEFAULT_METHOD                = :post
-      DEFAULT_USER_AGENT            = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
-      DEFAULT_FORMAT                = :json
-      DEFAULT_CONFIRMED            = false
-      DEFAULT_HEADERS = { "Content-Type" => "application/json",
-                          "Accept" => "application/json" }
+      DEFAULT_ENDPOINT       = 'http://secure.localhost.com:3000/users'
+      DEFAULT_METHOD         = :post
+      DEFAULT_USER_AGENT     = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
+      DEFAULT_FORMAT         = :json
+      DEFAULT_DELIVERED      = false
+      DEFAULT_AUTHORIZED     = false
+      DEFAULT_HEADERS        = { "Content-Type"  => "application/json",
+                                  "Accept"       => "application/json" }
       DEFAULT_STATUS_MESSAGE = ""
+
+      CURRENT_USER_ENDPOINT  = "http://secure.localhost.com:3000/api/users/current_user/edit"
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml
@@ -34,9 +37,10 @@ module Teachable
       def reset
         self.method                = DEFAULT_METHOD
         self.format                = DEFAULT_FORMAT
-        self.confirmed             = DEFAULT_CONFIRMED
+        self.delivered             = DEFAULT_DELIVERED
         self.status_message        = DEFAULT_STATUS_MESSAGE
         self.headers               = DEFAULT_HEADERS
+        self.authorized            = DEFAULT_AUTHORIZED
       end
 
       def configure

@@ -7,22 +7,17 @@ module Teachable
 
       format :json
 
-      SUCCESSFUL_LOGIN = {"success"=>true, "login"=>"verified"}
-      SUCCESSFUL_REGISTRATION = {"success"=>true, "registration"=>"verified"}
+      # SUCCESSFUL_LOGIN = {"success"=>true, "login"=>"verified"}
+      # SUCCESSFUL_REGISTRATION = {"success"=>true, "registration"=>"verified"}
 
       # Define the same set of accessors as the Teachable module
       attr_accessor *Teachable::Jg::Configuration::VALID_CONFIG_KEYS
-      attr_accessor :endpoint
+      attr_accessor :endpoint, :authorized
 
       # curl -X POST -d '{ "user": { "email": "dev-8@example.com", "password": "password" }}' localhost:3000/users/sign_in.json -i -H "Accept: application/json" -H "Content-Type: application/json"
       def initialize(options={})
-        # # Merge the config values from the module and those passed
-        # # to the client.
-
         merged_options = Teachable::Jg.options.merge(options)
 
-        # Copy the merged values to this client and ignore those
-        # not part of our configuration
         Teachable::Jg::Configuration::VALID_CONFIG_KEYS.each do |key|
           send("#{key}=", merged_options[key])
         end
@@ -57,7 +52,8 @@ module Teachable
         if resp.code == 200
           body = process_body(resp.body)
 
-          self.confirmed = true if body["success"]
+          self.delivered = true if body["success"]
+          self.authorized = true if body["login"] == "verified"
 
           return body
         else
@@ -70,6 +66,44 @@ module Teachable
           JSON.parse(body)
         else
           {"success"=>false, "login"=>"no json response"}
+        end
+      end
+
+      def get_user_info(path, options)
+        user_headers = headers.reject {|key| key == "Accept" }
+
+        query = {
+          user_email: options[:user_email],
+          user_token: options[:user_token]
+        }
+
+        resp = HTTParty.get(
+          path,
+          query: query,
+          headers: user_headers
+        )
+
+        if resp.code == 200
+          body = process_body(resp.body)
+          self.delivered = true if body["success"]
+          return body
+        else
+          return resp.code
+        end
+      end
+
+      def user_info(options={})
+        if authorized
+          path = options[:path] || Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
+          if options[:user_email] && !options[:user_email].nil? && options[:user_token] && !options[:user_token].nil?
+            resp = get_user_info(path, options)
+          else
+            self.delivered = false
+            {"success"=>false, "user_info"=>"missing or invalid params"}
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "login"=>"failed to authorize"}
         end
       end
 
