@@ -11,15 +11,17 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{A convenient wrapper for the valid endpoints of Teachable Mock API}
   spec.description   = %q{A convenient wrapper for the valid endpoints of Teachable Mock API}
-  spec.homepage      = "https://www.cnn.com" # place holder for now
+  spec.homepage      = "https://github.com/zioplox11/teachable-jg" # place holder for now
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
   # if spec.respond_to?(:metadata)
-  #   spec.metadata['allowed_push_host'] = "https://mygemserver.com"  # place holder for now
+  #   spec.metadata['allowed_push_host'] = "https://mygemserver.com"  # commenting out for now
   # end
+
   spec.add_development_dependency "bundler", "~> 1.9"
   spec.add_development_dependency "rake", "~> 12.0"
   spec.add_development_dependency "pry"

@@ -7,14 +7,9 @@ module Teachable
 
       format :json
 
-      # SUCCESSFUL_LOGIN = {"success"=>true, "login"=>"verified"}
-      # SUCCESSFUL_REGISTRATION = {"success"=>true, "registration"=>"verified"}
-
-      # Define the same set of accessors as the Teachable module
       attr_accessor *Teachable::Jg::Configuration::VALID_CONFIG_KEYS
       attr_accessor :endpoint, :authorized
 
-      # curl -X POST -d '{ "user": { "email": "dev-8@example.com", "password": "password" }}' localhost:3000/users/sign_in.json -i -H "Accept: application/json" -H "Content-Type: application/json"
       def initialize(options={})
         merged_options = Teachable::Jg.options.merge(options)
 
@@ -26,52 +21,18 @@ module Teachable
         @status_message = confirm_status(options)
       end
 
-      def build_path(registration)
-        registration ? "/register" : "/sign-in"
-      end
-
-      def post_to_users_endpoint(options)
-        path = endpoint + build_path(options[:registration])
-
-        query = {user: {
-          "email"                 => options[:email],
-          "password"              => options[:password],
-          "password_confirmation" => options[:password_confirmation]
-        }}
-
-        resp = HTTParty.post(
-          path,
-          query: query,
-          headers: headers
-        )
-      end
-
-      def confirm_status(options={})
-        if has_required_attributes?(options, :email, :password)
-
-          resp = post_to_users_endpoint(options)
-
-          if resp.code == 200
-            body = process_body(resp.body)
-
-            self.delivered = true if body["success"]
-            self.authorized = true if body["login"] == "verified"
-
-            return body
+      def user_info(options={})
+        if authorized
+          path = Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
+          if has_required_attributes?(options, :user_email, :user_token)
+            resp = get_user_info(path, options)
           else
-            return resp.code
+            self.delivered = false
+            {"success"=>false, "user_info"=>"missing or invalid params"}
           end
         else
           self.delivered = false
-          {"success"=>false, "user_info"=>"missing or invalid params"}
-        end
-      end
-
-      def process_body(body)
-        if body.is_a?(String)
-          JSON.parse(body)
-        else
-          {"success"=>false, "login"=>"no json response"}
+          {"success"=>false, "login"=>"failed to authorize"}
         end
       end
 
@@ -98,14 +59,45 @@ module Teachable
         end
       end
 
-      def user_info(options={})
+      def post_to_users(options)
+        path = endpoint + build_path(options[:registration])
+
+        query = {user: {
+          "email"                 => options[:email],
+          "password"              => options[:password],
+          "password_confirmation" => options[:password_confirmation]
+        }}
+
+        resp = HTTParty.post(
+          path,
+          query: query,
+          headers: headers
+        )
+      end
+
+      def create_order(options)
         if authorized
-          path = Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
-          if has_required_attributes?(options, :user_email, :user_token)
-            resp = get_user_info(path, options)
+          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if has_required_attributes?(options, :total, :total_quantity, :email, :user_email, :user_token)
+            resp = post_to_orders(path, options)
           else
             self.delivered = false
-            {"success"=>false, "user_info"=>"missing or invalid params"}
+            {"success"=>false, "create_order"=>"missing or invalid params"}
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "login"=>"failed to authorize"}
+        end
+      end
+
+      def delete_order(options)
+        if authorized
+          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if has_required_attributes?(options, :order_id, :user_email, :user_token)
+            resp = destroy_order(path, options)
+          else
+            self.delivered = false
+            {"success"=>false, "delete_order"=>"missing or invalid params"}
           end
         else
           self.delivered = false
@@ -138,7 +130,7 @@ module Teachable
         end
       end
 
-      def destroy_orders(path, options)
+      def destroy_order(path, options)
         path_with_params = path + "/#{options[:order_id]}?user_email=#{options[:user_email]}&user_token=#{options[:user_token]}"
 
         resp = HTTParty.delete(
@@ -155,6 +147,39 @@ module Teachable
         end
       end
 
+      def build_path(registration)
+        registration ? "/register" : "/sign-in"
+      end
+
+      def confirm_status(options={})
+        if has_required_attributes?(options, :email, :password)
+
+          resp = post_to_users(options)
+
+          if resp.code == 200
+            body = process_body(resp.body)
+
+            self.delivered = true if body["success"]
+            self.authorized = true if body["login"] == "verified"
+
+            return body
+          else
+            return resp.code
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "user_info"=>"missing or invalid params"}
+        end
+      end
+
+      def process_body(body)
+        if body.is_a?(String)
+          JSON.parse(body)
+        else
+          {"success"=>false, "login"=>"no json response"}
+        end
+      end
+
       def has_required_attributes?(options, *attributes)
         attributes << :password_confirmation if options[:registration]
 
@@ -164,37 +189,6 @@ module Teachable
 
         true
       end
-
-      def create_order(options)
-        if authorized
-          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
-          if has_required_attributes?(options, :total, :total_quantity, :email, :user_email, :user_token)
-            resp = post_to_orders(path, options)
-          else
-            self.delivered = false
-            {"success"=>false, "create_order"=>"missing or invalid params"}
-          end
-        else
-          self.delivered = false
-          {"success"=>false, "login"=>"failed to authorize"}
-        end
-      end
-
-      def delete_order(options)
-        if authorized
-          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
-          if has_required_attributes?(options, :order_id, :user_email, :user_token)
-            resp = destroy_orders(path, options)
-          else
-            self.delivered = false
-            {"success"=>false, "delete_order"=>"missing or invalid params"}
-          end
-        else
-          self.delivered = false
-          {"success"=>false, "login"=>"failed to authorize"}
-        end
-      end
-
     end # Client
   end
 end
