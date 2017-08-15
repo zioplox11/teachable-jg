@@ -28,13 +28,13 @@ http_interactions:
       - no-store, must-revalidate, private, max-age=0
       Set-Cookie:
       - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=fd5c1ba7441b90f708d813cdbded568e--200; path=/; max-age=5; HttpOnly
+      - _mkra_ctxt=607f82568f4bb7dc1deace4a8f1c98ab--200; path=/; max-age=5; HttpOnly
       X-Request-Id:
-      - 191bc08a-1a92-4214-a225-fb168196858f
+      - 3c86cebf-d299-426f-b06f-45a3fec286bb
       X-Runtime:
-      - '0.048726'
+      - '0.065811'
       X-Miniprofiler-Ids:
-      - '["1z9knrtichg4skpj7tza","aqe3eh4oxjc11fppuuru","velajwnp2r27bvwyxe59","c8epdksvi0ubocwsew10","g7bakoj2pc5couzufcjl","m79dfno37g2f6hu6n85y","n244obu6r955uwce8jm9","h4y86os37hkmdeaeex6x","kp1t3ol62yebdghsqy0x","rl2szk7c1g0xgzllonek","i4itkdanpxzg7yaqzy2u","sbzbwnhsixe9ibpsvwcj","e32jg4otvjih4bpkjx49","cb51u8vqzewm4tzufnhv","nvfgnf3krvie4r6bjkn8","6wlxeatfsv2bkr0y3tve","e8n256ou4tkn3ksmiiz0","smdtn2qp2xyh7rsf10p0","sbo2r7ath11m0svyd2oo","p9rtx9pxzm46isv4yutt"]'
+      - '["9lyydr5tfvgn7qjh12sj","9we3awqx1rpk97jkg4f0","8a6fiiln105dfvjx1lbd","g06flclmwyticlaa4gol","5p43vka53pxaz9l13oxd","rwz6rpqqh3kpgx3jx6gc","oyr9hne1hm1rkh8jwq4o","1epnvfk58hkfd47i1kwx","mehizk1fh9k25qy5iaf7","dyk7e200pedmzy7w0gt7","6z2brgcvgaltqpn2lv8r","ud64uzumfrrzkamwxezo","syxkjo0plwf3x2iqiswp","qy0k5imz5mu2n7jlts9o","jg1job3jdx5zm0cfuvuc","x5xbbnpsg8mr8rmj68t1","jxobv1qan23lln40wgqp","mvb4q0xtno3qsvt9v0ok","lmn9ps3fzrcukrfhyz7v","p2lucy4e9e5o4ka4opsy"]'
       Connection:
       - close
       Server:
@@ -43,7 +43,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"login":"verified"}'
     http_version: 
-  recorded_at: Tue, 15 Aug 2017 00:18:53 GMT
+  recorded_at: Tue, 15 Aug 2017 07:22:10 GMT
 - request:
     method: get
     uri: http://secure.localhost.com:3000/api/users/current_user/edit?user_email=dev-8@example.com&user_token=3kpLtJAd4fBmPsPnmaiZ
@@ -70,13 +70,13 @@ http_interactions:
       - no-store, must-revalidate, private, max-age=0
       Set-Cookie:
       - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=80146d11587a64f8d0d31e1d8344947e--200; path=/; max-age=5; HttpOnly
+      - _mkra_ctxt=fffdfc5adce5cc9341e95f7066377361--200; path=/; max-age=5; HttpOnly
       X-Request-Id:
-      - c3c02fd8-040b-4a78-9ec5-65e2ae904def
+      - 6de2488f-3454-456c-999a-288190169aa8
       X-Runtime:
-      - '0.043073'
+      - '0.043967'
       X-Miniprofiler-Ids:
-      - '["btm1v3as9xfpa1opiy92","1z9knrtichg4skpj7tza","aqe3eh4oxjc11fppuuru","velajwnp2r27bvwyxe59","c8epdksvi0ubocwsew10","g7bakoj2pc5couzufcjl","m79dfno37g2f6hu6n85y","n244obu6r955uwce8jm9","h4y86os37hkmdeaeex6x","kp1t3ol62yebdghsqy0x","rl2szk7c1g0xgzllonek","i4itkdanpxzg7yaqzy2u","sbzbwnhsixe9ibpsvwcj","e32jg4otvjih4bpkjx49","cb51u8vqzewm4tzufnhv","nvfgnf3krvie4r6bjkn8","6wlxeatfsv2bkr0y3tve","e8n256ou4tkn3ksmiiz0","smdtn2qp2xyh7rsf10p0","sbo2r7ath11m0svyd2oo"]'
+      - '["ax503w2t03dq6n8wgopp","9lyydr5tfvgn7qjh12sj","9we3awqx1rpk97jkg4f0","8a6fiiln105dfvjx1lbd","g06flclmwyticlaa4gol","5p43vka53pxaz9l13oxd","rwz6rpqqh3kpgx3jx6gc","oyr9hne1hm1rkh8jwq4o","1epnvfk58hkfd47i1kwx","mehizk1fh9k25qy5iaf7","dyk7e200pedmzy7w0gt7","6z2brgcvgaltqpn2lv8r","ud64uzumfrrzkamwxezo","syxkjo0plwf3x2iqiswp","qy0k5imz5mu2n7jlts9o","jg1job3jdx5zm0cfuvuc","x5xbbnpsg8mr8rmj68t1","jxobv1qan23lln40wgqp","mvb4q0xtno3qsvt9v0ok","lmn9ps3fzrcukrfhyz7v"]'
       Connection:
       - close
       Server:
@@ -85,5 +85,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"user_info":"unrecognized or malformed"}'
     http_version: 
-  recorded_at: Tue, 15 Aug 2017 00:18:53 GMT
+  recorded_at: Tue, 15 Aug 2017 07:22:10 GMT
 recorded_with: VCR 3.0.3

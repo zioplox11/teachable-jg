@@ -28,13 +28,13 @@ http_interactions:
       - no-store, must-revalidate, private, max-age=0
       Set-Cookie:
       - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=aa8b5ec80624e36d309c8e5b1018131c--200; path=/; max-age=5; HttpOnly
+      - _mkra_ctxt=b935ce7ee8722240ed363ed66f08d0d5--200; path=/; max-age=5; HttpOnly
       X-Request-Id:
-      - 9c90c1f4-2f5a-46b9-a965-4c6d51c84463
+      - 3fb27ab2-cbec-4d34-9e18-91bf972fcb6b
       X-Runtime:
-      - '0.052785'
+      - '0.052341'
       X-Miniprofiler-Ids:
-      - '["tuz5qm832imclr8kh7g3","zvoavheabozeyvh4pdm0","13udoccszrevrnoz0jzq","iinodms3xad9mathaa9b","6pjwavjr5295wrybr40t","uemv8lib8l5t8dprfc63","h4z472b68tquhgb0gmk8","pzya9ougi3ijnro5r209","og6wumwqvsqhq78ul2m5","w50uecnwsnqlfrwrgqy2","w1ztcpabs2b9gcie7g6b","wwj3isndyod6dyeaeq1d","4fbyhj5rx91wcr5zkgw8","hdzzlrleasask8uubh6p","f1rwwhw36igp8u8xy6v4","nante6u0o19hcrp96clw","klcgceviuvh706htrn13","b4oxwbpqbdxcjf27bfdk","ruzazqzuc72s7akt4dqd","je26z0sjk8vwj8py4ulc"]'
+      - '["ws7d1y18oaon46vfsuip","59l808q8tmppybq9h7hw","o19snn3kgri275fs39g2","9ugsg4ga1sgpfczijtyr","pclhhii9k7etrgz85bgx","6t3vgdy8gnsyep606g5i","ax503w2t03dq6n8wgopp","9lyydr5tfvgn7qjh12sj","9we3awqx1rpk97jkg4f0","8a6fiiln105dfvjx1lbd","g06flclmwyticlaa4gol","5p43vka53pxaz9l13oxd","rwz6rpqqh3kpgx3jx6gc","oyr9hne1hm1rkh8jwq4o","1epnvfk58hkfd47i1kwx","mehizk1fh9k25qy5iaf7","dyk7e200pedmzy7w0gt7","6z2brgcvgaltqpn2lv8r","ud64uzumfrrzkamwxezo","syxkjo0plwf3x2iqiswp"]'
       Connection:
       - close
       Server:
@@ -43,49 +43,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"login":"verified"}'
     http_version: 
-  recorded_at: Tue, 15 Aug 2017 04:22:35 GMT
-- request:
-    method: get
-    uri: http://secure.localhost.com:3000/api/users/current_user/edit?user_email=dev-8@example.com&user_token=3kpLtJAd4fBmPsPnmaiZ
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-store, must-revalidate, private, max-age=0
-      Set-Cookie:
-      - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=c914bd7ab71b2859b449fe788e32df75--200; path=/; max-age=5; HttpOnly
-      X-Request-Id:
-      - b98e80f7-71ff-4d67-9333-2de9869a887c
-      X-Runtime:
-      - '0.150323'
-      X-Miniprofiler-Ids:
-      - '["x6vgqug7bfer2hg2rzkx","tuz5qm832imclr8kh7g3","zvoavheabozeyvh4pdm0","13udoccszrevrnoz0jzq","iinodms3xad9mathaa9b","6pjwavjr5295wrybr40t","uemv8lib8l5t8dprfc63","h4z472b68tquhgb0gmk8","pzya9ougi3ijnro5r209","og6wumwqvsqhq78ul2m5","w50uecnwsnqlfrwrgqy2","w1ztcpabs2b9gcie7g6b","wwj3isndyod6dyeaeq1d","4fbyhj5rx91wcr5zkgw8","hdzzlrleasask8uubh6p","f1rwwhw36igp8u8xy6v4","nante6u0o19hcrp96clw","klcgceviuvh706htrn13","b4oxwbpqbdxcjf27bfdk","ruzazqzuc72s7akt4dqd"]'
-      Connection:
-      - close
-      Server:
-      - thin
-    body:
-      encoding: UTF-8
-      string: '{"success":true,"user_info":"unrecognized or malformed"}'
-    http_version: 
-  recorded_at: Tue, 15 Aug 2017 04:22:35 GMT
+  recorded_at: Tue, 15 Aug 2017 07:22:10 GMT
 - request:
     method: post
     uri: http://secure.localhost.com:3000/api/orders?order%5Bemail%5D=dev-6@example.com&order%5Bspecial_instructions%5D=special%20instructions%20foo%20bar&order%5Btotal%5D=3.00&order%5Btotal_quantity%5D=3&user_email=fred@fred.com&user_token=3kpLtJAd4fBmPsPnmaiZ
@@ -114,13 +72,13 @@ http_interactions:
       - no-store, must-revalidate, private, max-age=0
       Set-Cookie:
       - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=1f5412a949d449af598441b07d94176e--200; path=/; max-age=5; HttpOnly
+      - _mkra_ctxt=237e589fb9e129addfd0ba16a14a5887--200; path=/; max-age=5; HttpOnly
       X-Request-Id:
-      - d3358d7b-9904-4656-bc11-3d8ffe5d954e
+      - 5de2a0e7-77f1-4ba9-940a-2ffcef404bd5
       X-Runtime:
-      - '0.059823'
+      - '0.045112'
       X-Miniprofiler-Ids:
-      - '["3j404grez8ph1ndl61nt","l8i62lfp40wxy6syc1k9","sl4u5jp7p9ih2p4ffefa","o8vdqqxcz6h08etsjj1m","a702oilmu46imy4au0ya","r6z9eeiiwh12sp7veq80","tkf7966oytehys4brsbw","v6pj71ozu2sked39dcfr","tasxkalstd9ib75uhpz8","x6vgqug7bfer2hg2rzkx","tuz5qm832imclr8kh7g3","zvoavheabozeyvh4pdm0","13udoccszrevrnoz0jzq","iinodms3xad9mathaa9b","6pjwavjr5295wrybr40t","uemv8lib8l5t8dprfc63","h4z472b68tquhgb0gmk8","pzya9ougi3ijnro5r209","og6wumwqvsqhq78ul2m5","w50uecnwsnqlfrwrgqy2"]'
+      - '["94o08km2trpo7t3d0frw","ws7d1y18oaon46vfsuip","59l808q8tmppybq9h7hw","o19snn3kgri275fs39g2","9ugsg4ga1sgpfczijtyr","pclhhii9k7etrgz85bgx","6t3vgdy8gnsyep606g5i","ax503w2t03dq6n8wgopp","9lyydr5tfvgn7qjh12sj","9we3awqx1rpk97jkg4f0","8a6fiiln105dfvjx1lbd","g06flclmwyticlaa4gol","5p43vka53pxaz9l13oxd","rwz6rpqqh3kpgx3jx6gc","oyr9hne1hm1rkh8jwq4o","1epnvfk58hkfd47i1kwx","mehizk1fh9k25qy5iaf7","dyk7e200pedmzy7w0gt7","6z2brgcvgaltqpn2lv8r","ud64uzumfrrzkamwxezo"]'
       Connection:
       - close
       Server:
@@ -129,5 +87,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"create_order":"unrecognized or malformed"}'
     http_version: 
-  recorded_at: Tue, 15 Aug 2017 04:25:13 GMT
+  recorded_at: Tue, 15 Aug 2017 07:22:10 GMT
 recorded_with: VCR 3.0.3

@@ -2,50 +2,6 @@
 http_interactions:
 - request:
     method: post
-    uri: http://secure.localhost.com:3000/users/sign-in?user%5Bemail%5D=unregistered@example.com&user%5Bpassword%5D=password
-    body:
-      encoding: UTF-8
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-store, must-revalidate, private, max-age=0
-      Set-Cookie:
-      - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=9cd03367b5a67eac401ff490fe66bc02--200; path=/; max-age=5; HttpOnly
-      X-Request-Id:
-      - c0abc1a0-e978-4b67-86a1-fc762ff00085
-      X-Runtime:
-      - '0.038668'
-      X-Miniprofiler-Ids:
-      - '["dyxtni5lb8uls6xs6i8j","t3gi176udoot20b99vka","7lli2u0mjtbpdqkezhu0","s2alcipcbdbiwr5tvtaw","vn8fhn6ha11uyxa689rf","7ap4zeixztrgbsvmlhk6","h2t6zdjrwfs38c3kkrva","e1xbnck3rasda88bauhd","ebg6l23zkaw2xf8fbns2","2rzg418sx7mcpr01lrbj","4keyzq02fm2orb1jzlbw","9sqmsyl9em26bdypq7yb","dxr7nlyn1tc3fk3xnezm","xhokj4ln9jca0sjl91bu","orgaxx8evz7b1mcj69ip","h97tpg2qx296g5lkfcvu","7qi2ziw9pdgeaj80vxpu","nhlulpbmyhii4kl79k9t","r71022bl7biwxifg18a4","72y2256j1h1ir7xd66ze"]'
-      Connection:
-      - close
-      Server:
-      - thin
-    body:
-      encoding: UTF-8
-      string: '{"success":true,"login":"unrecognized or malformed"}'
-    http_version: 
-  recorded_at: Mon, 14 Aug 2017 17:54:56 GMT
-- request:
-    method: post
     uri: http://secure.localhost.com:3000/users/sign-in?user%5Bemail%5D=unregistered@example.com&user%5Bpassword%5D=password&user%5Bpassword_confirmation%5D=
     body:
       encoding: UTF-8
@@ -72,13 +28,13 @@ http_interactions:
       - no-store, must-revalidate, private, max-age=0
       Set-Cookie:
       - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=c9c2790387a283e15e41700630076eab--200; path=/; max-age=5; HttpOnly
+      - _mkra_ctxt=de048600b8a19a9eb7c9fe312841f2b7--200; path=/; max-age=5; HttpOnly
       X-Request-Id:
-      - 45dca35d-7df2-492b-9d94-33481c391547
+      - bb6c67d2-07e5-423d-9ed3-271c4bb44783
       X-Runtime:
-      - '0.051213'
+      - '0.037070'
       X-Miniprofiler-Ids:
-      - '["q5qdszn9ypi4wdkcydrc","rxukj37zm5yce25b9c5o","vjbg9qa303k0c39imi7f","qg5p65ii7bebklikip1t","h0hryq94qdhsnl0d5bf9","2u6ahsew3y4gkkktel9l","k580iyr63ep4ujs5rmbw","hwh6ynxcygm5pzaamo3n","eh5rzkj0wf9hlo50piai","l15wkrgi6fpddj9yekb4","t4xlil75nqxxkwn1402k","lqst7lpy5amkdo34v57j","30nt7z2torp85bi49xqr","waijyaxmvmqcdvuojhcy","ft1g9jcgurwcy4zkgwxk","fqmqrgnr7nyi0yx2twkv","zcchcaz0i95eb8ei48os","fcaapz0toxpr8yy6b63b","iyey42sxmnvi18ba2w45","hndsc6lnbl60mj3ogchh"]'
+      - '["dyk7e200pedmzy7w0gt7","6z2brgcvgaltqpn2lv8r","ud64uzumfrrzkamwxezo","syxkjo0plwf3x2iqiswp","qy0k5imz5mu2n7jlts9o","jg1job3jdx5zm0cfuvuc","x5xbbnpsg8mr8rmj68t1","jxobv1qan23lln40wgqp","mvb4q0xtno3qsvt9v0ok","lmn9ps3fzrcukrfhyz7v","p2lucy4e9e5o4ka4opsy","o29zwbmmleaep8nocz79","7u3p96qsjry5wz13easg","6dj8av0wcy4awobzmwlk","86bxtcqqvs8kjy4rp1ci","hjgvnqlfxoo20whn7xz3","ezwzlsik5lq0kpopd0mh","4oqaauvgyd92s6mvb4l3","7fyzrzmn587lmc67unmp","zxkrm9zic1pfzw5xue6r"]'
       Connection:
       - close
       Server:
@@ -87,49 +43,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"success":true,"login":"unrecognized or malformed"}'
     http_version: 
-  recorded_at: Mon, 14 Aug 2017 18:52:30 GMT
-- request:
-    method: post
-    uri: http://secure.localhost.com:3000/users/sign-in?user%5Bemail%5D=&user%5Bpassword%5D=&user%5Bpassword_confirmation%5D=
-    body:
-      encoding: UTF-8
-      string: ''
-    headers:
-      Content-Type:
-      - application/json
-      Accept:
-      - application/json
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-store, must-revalidate, private, max-age=0
-      Set-Cookie:
-      - __profilin=p%3Dt; path=/
-      - _mkra_ctxt=3a9864a880e89c804c0625896401c937--200; path=/; max-age=5; HttpOnly
-      X-Request-Id:
-      - 8de3fdd9-8a48-4e9a-b75b-88559ca52453
-      X-Runtime:
-      - '0.050456'
-      X-Miniprofiler-Ids:
-      - '["618wgxvny1wuoo2ejgke","pjckc1vexiium40lcv8s","1z2463iw4ch0006hgs5w","7u7wz5oplymybupxk4d0","rxsiplmai9fl4806cj14","a26djohpk0grl572dc4i","c2vef8ln9sy0x1i37hva","pecfe4177vw1rvw0ei9s","wqgas5r9zssn7bqu38nd","pktd262dvckqhbxpqqyc","ng0tnczux9daqtbjv2q7","3u4cfgwwk6wmy0xfazhq","c4pmame8ey6ftr4hjtui","xshi1zjio0nc6rukhv9t","5er4fjodlqen4zw6re9s","nq1e5ax5fscuy0zjstyn","szv8adkddgaqfyqsbzbk","d4bmyj7112vt3bf0p057","964a3c5nhi7rhpwlmvg2","8nctrfcxq2342hdz23pi"]'
-      Connection:
-      - close
-      Server:
-      - thin
-    body:
-      encoding: UTF-8
-      string: '{"success":false,"login":"missing or invalid"}'
-    http_version: 
-  recorded_at: Mon, 14 Aug 2017 20:00:09 GMT
+  recorded_at: Tue, 15 Aug 2017 07:22:09 GMT
 recorded_with: VCR 3.0.3
