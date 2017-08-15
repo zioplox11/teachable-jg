@@ -246,10 +246,20 @@ describe Teachable::Jg::Client do
       "order_created"        =>  Time.utc(2000,"jan",1,20,15,1).to_s }
     end
 
-    let(:valid_delete_order_options) do
-      { order_id: "2",
-      user_email: "dev-6@example.com", # always the same as email?
+    let(:valid_get_order_options) do
+      { user_email: "dev-6@example.com",
       user_token: "3kpLtJAd4fBmPsPnmaiZ" }
+    end
+
+    let(:valid_delete_order_options) do
+      { user_email: "dev-6@example.com",
+      user_token: "3kpLtJAd4fBmPsPnmaiZ",
+      order_id: "2" }
+    end
+
+    let(:successful_orders) do
+      {"success"=>true,
+        "get_orders"=>"verified"}
     end
 
     let(:successful_deleted_order) do
@@ -279,6 +289,17 @@ describe Teachable::Jg::Client do
         end
       end
 
+      it "must be authorized to get orders" do
+        VCR.use_cassette('teachable_client_successful') do
+          unauthorized_client = successful_auth_client
+          unauthorized_client.authorized = false
+
+          expect(unauthorized_client.authorized).to be_falsey
+          expect(unauthorized_client.orders(valid_get_order_options)).to eq(unauthorized_login)
+          expect(unauthorized_client.delivered).to be_falsey
+        end
+      end
+
       it "must be authorized to make http request to delete orders" do
         VCR.use_cassette('teachable_client_successful') do
           unauthorized_client = successful_auth_client
@@ -287,6 +308,18 @@ describe Teachable::Jg::Client do
           expect(unauthorized_client.authorized).to be_falsey
           expect(unauthorized_client.delete_order(valid_delete_order_options)).to eq(unauthorized_login)
           expect(unauthorized_client.delivered).to be_falsey
+        end
+      end
+    end
+
+    describe ".orders" do
+      it "creates new order and returns order details" do
+        VCR.use_cassette('teachable_client_successful_new_order') do
+          order = successful_auth_client.orders(valid_get_order_options)
+
+          expect(successful_auth_client.authorized).to be_truthy
+          expect(successful_auth_client.delivered).to be_truthy
+          expect(order).to eq(successful_orders)
         end
       end
     end

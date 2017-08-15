@@ -25,7 +25,7 @@ module Teachable
         if authorized
           path = Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
           if has_required_attributes?(options, :user_email, :user_token)
-            resp = get_user_info(path, options)
+            resp = get(path, options)
           else
             self.delivered = false
             {"success"=>false, "user_info"=>"missing or invalid params"}
@@ -36,7 +36,7 @@ module Teachable
         end
       end
 
-      def get_user_info(path, options)
+      def get(path, options)
         user_headers = headers.reject {|key| key == "Accept" }
 
         query = {
@@ -83,6 +83,21 @@ module Teachable
           else
             self.delivered = false
             {"success"=>false, "create_order"=>"missing or invalid params"}
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "login"=>"failed to authorize"}
+        end
+      end
+
+      def orders(options)
+        if authorized
+          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if has_required_attributes?(options, :user_email, :user_token)
+            resp = get(path, options)
+          else
+            self.delivered = false
+            {"success"=>false, "get_orders"=>"missing or invalid params"}
           end
         else
           self.delivered = false
