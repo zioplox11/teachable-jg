@@ -34,9 +34,9 @@ module Teachable
         path = endpoint + build_path(options[:registration])
 
         query = {user: {
-          "email"     => options[:email],
-          "password"      => options[:password],
-          "password_confirmation"      => options[:password_confirmation]
+          "email"                 => options[:email],
+          "password"              => options[:password],
+          "password_confirmation" => options[:password_confirmation]
         }}
 
         resp = HTTParty.post(
@@ -47,17 +47,23 @@ module Teachable
       end
 
       def confirm_status(options={})
-        resp = post_to_users_endpoint(options)
+        if has_required_attributes?(options, :email, :password)
 
-        if resp.code == 200
-          body = process_body(resp.body)
+          resp = post_to_users_endpoint(options)
 
-          self.delivered = true if body["success"]
-          self.authorized = true if body["login"] == "verified"
+          if resp.code == 200
+            body = process_body(resp.body)
 
-          return body
+            self.delivered = true if body["success"]
+            self.authorized = true if body["login"] == "verified"
+
+            return body
+          else
+            return resp.code
+          end
         else
-          return resp.code
+          self.delivered = false
+          {"success"=>false, "user_info"=>"missing or invalid params"}
         end
       end
 
@@ -94,8 +100,8 @@ module Teachable
 
       def user_info(options={})
         if authorized
-          path = options[:path] || Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
-          if options[:user_email] && !options[:user_email].nil? && options[:user_token] && !options[:user_token].nil?
+          path = Teachable::Jg::Configuration::CURRENT_USER_ENDPOINT
+          if has_required_attributes?(options, :user_email, :user_token)
             resp = get_user_info(path, options)
           else
             self.delivered = false
@@ -132,12 +138,37 @@ module Teachable
         end
       end
 
+      def destroy_orders(path, options)
+        path_with_params = path + "/#{options[:order_id]}?user_email=#{options[:user_email]}&user_token=#{options[:user_token]}"
+
+        resp = HTTParty.delete(
+          path_with_params,
+          headers: headers
+        )
+
+        if resp.code == 200
+          body = process_body(resp.body)
+          self.delivered = true if body["success"]
+          return body
+        else
+          return resp.code
+        end
+      end
+
+      def has_required_attributes?(options, *attributes)
+        attributes << :password_confirmation if options[:registration]
+
+        return false if attributes.detect do |attr|
+          !(options.has_key?(attr) && !options[attr].nil?)
+        end
+
+        true
+      end
+
       def create_order(options)
         if authorized
-          path = options[:path] || Teachable::Jg::Configuration::ORDERS_ENDPOINT
-          if options[:total] && !options[:total].nil? &&
-            options[:total_quantity] && !options[:total_quantity].nil? &&
-            options[:email] && !options[:email].nil?
+          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if has_required_attributes?(options, :total, :total_quantity, :email, :user_email, :user_token)
             resp = post_to_orders(path, options)
           else
             self.delivered = false
@@ -147,7 +178,21 @@ module Teachable
           self.delivered = false
           {"success"=>false, "login"=>"failed to authorize"}
         end
+      end
 
+      def delete_order(options)
+        if authorized
+          path = Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if has_required_attributes?(options, :order_id, :user_email, :user_token)
+            resp = destroy_orders(path, options)
+          else
+            self.delivered = false
+            {"success"=>false, "delete_order"=>"missing or invalid params"}
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "login"=>"failed to authorize"}
+        end
       end
 
     end # Client

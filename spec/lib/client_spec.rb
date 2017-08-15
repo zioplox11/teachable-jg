@@ -32,17 +32,17 @@ describe Teachable::Jg::Client do
           format:                'of',
           endpoint:              'ep',
           method:                'hm',
-          delivered:             'zy',
+          delivered:             'am',
           status_message:        'nn',
           authorized:            'am',
           headers:               {'qn'=>'ff'}
         }
       end
 
-      it 'overrides module configuration' do
+      it 'overrides most module configurations' do
         api = Teachable::Jg::Client.new(@config)
         @keys.each do |key|
-          expect(api.send(key)).to eq(@config[key]) unless key == :status_message
+          expect(api.send(key)).to eq(@config[key]) unless [:status_message, :delivered].include?(key)
         end
       end
 
@@ -54,7 +54,7 @@ describe Teachable::Jg::Client do
         end
 
         @keys.each do |key|
-          expect(api.send("#{key}")).to eq(@config[key]) unless key == :status_message
+          expect(api.send("#{key}")).to eq(@config[key]) unless [:status_message, :delivered].include?(key)
         end
       end
     end
@@ -63,7 +63,7 @@ describe Teachable::Jg::Client do
   describe 'login and authorization via .confirm_status' do
     let(:authorized)   { {"success" =>true, "login"=>"verified"} }
     let(:unrecognized) { {"success" =>true, "login"=>"unrecognized or malformed"} }
-    let(:invalid)      { {"success" =>false, "login"=>"missing or invalid" } }
+    let(:invalid)      { {"success" =>false, "user_info"=>"missing or invalid params" } }
 
     let(:login_client) { Teachable::Jg::Client.new }
 
@@ -108,7 +108,7 @@ describe Teachable::Jg::Client do
     let(:registered)         { {"success" =>true, "registration"=>"verified"} }
     let(:already_registered) { {"success" =>true, "registration"=>"already_registered"} }
     let(:unregistered)       { {"success" =>true, "registration"=>"unrecognized or malformed"} }
-    let(:invalid)            { {"success" =>false, "registration"=>"missing or invalid" } }
+    let(:invalid)            { {"success" =>false, "user_info"=>"missing or invalid params" } }
 
     context ".authorized" do
       it "is false for authorization" do
@@ -227,6 +227,15 @@ describe Teachable::Jg::Client do
   end
 
   context "orders" do
+    let(:valid_order_options) do
+      { total: "3.00",
+      total_quantity: "3",
+      email: "dev-6@example.com",
+      user_email: "dev-6@example.com", # always the same as email?
+      special_instructions:  "special instructions foo bar",
+      user_token: "3kpLtJAd4fBmPsPnmaiZ" }
+    end
+
     let(:successful_new_order) do
       { "success"            =>  true,
       "create_order"         =>  "verified",
@@ -237,18 +246,25 @@ describe Teachable::Jg::Client do
       "order_created"        =>  Time.utc(2000,"jan",1,20,15,1).to_s }
     end
 
-    let(:valid_order_options) do
-      { total: "3.00",
-      total_quantity: "3",
-      email: "dev-6@example.com",
+    let(:valid_delete_order_options) do
+      { order_id: "2",
       user_email: "dev-6@example.com", # always the same as email?
-      special_instructions:  "special instructions foo bar",
       user_token: "3kpLtJAd4fBmPsPnmaiZ" }
+    end
+
+    let(:successful_deleted_order) do
+      {"success"=>true,
+        "order_id"=>"2",
+        "user_email"=>"dev-6@example.com",
+        "destroy_order"=>"destroyed",
+        "order_destroyed"=> Time.utc(2000,"jan",1,20,15,1).to_s}
     end
 
     let(:unauthorized_login)     { {"success"    =>false, "login"=>"failed to authorize"} }
     let(:unrecognized_user_info) { {"success"    =>true,  "create_order" => "unrecognized or malformed"} }
+    let(:unrecognized_user_info_delete) { {"success"    =>true,  "delete_order" => "unrecognized or malformed"} }
     let(:invalid_params)         { {"success"    =>false,  "create_order" => "missing or invalid params"} }
+    let(:invalid_delete_params)  { {"success"    =>false,  "delete_order" => "missing or invalid params"} }
     let(:successful_auth_client) { Teachable::Jg::Client.new(email: "dev-8@example.com", password: "password") }
 
     context "unauthorized" do
@@ -259,6 +275,17 @@ describe Teachable::Jg::Client do
 
           expect(unauthorized_client.authorized).to be_falsey
           expect(unauthorized_client.create_order(valid_order_options)).to eq(unauthorized_login)
+          expect(unauthorized_client.delivered).to be_falsey
+        end
+      end
+
+      it "must be authorized to make http request to delete orders" do
+        VCR.use_cassette('teachable_client_successful') do
+          unauthorized_client = successful_auth_client
+          unauthorized_client.authorized = false
+
+          expect(unauthorized_client.authorized).to be_falsey
+          expect(unauthorized_client.delete_order(valid_delete_order_options)).to eq(unauthorized_login)
           expect(unauthorized_client.delivered).to be_falsey
         end
       end
@@ -301,13 +328,61 @@ describe Teachable::Jg::Client do
         end
       end
 
-      it 'does not gather create order if params are missing or invalid' do
+      it 'does not create order if params are missing or invalid' do
         VCR.use_cassette('teachable_client_unsuccessful_missing_params_orders') do
-          info = successful_auth_client.create_order(user_token: "3kpLtJAd4fBmPsPnmaiZ")
+          order = successful_auth_client.create_order(user_token: "3kpLtJAd4fBmPsPnmaiZ")
 
           expect(successful_auth_client.authorized).to be_truthy
           expect(successful_auth_client.delivered).to be_falsey
-          expect(info).to eq(invalid_params)
+          expect(order).to eq(invalid_params)
+        end
+      end
+    end
+
+    describe ".delete_order" do
+      it "deletes order and returns details" do
+        VCR.use_cassette('teachable_client_successful_delete_order') do
+          order = successful_auth_client.delete_order(valid_delete_order_options)
+
+          expect(successful_auth_client.authorized).to be_truthy
+          expect(successful_auth_client.delivered).to be_truthy
+          expect(order).to eq(successful_deleted_order)
+        end
+      end
+
+      it "does not delete order if token incorrect" do
+        VCR.use_cassette('teachable_client_unsuccessful_delete_order_user_token') do
+          invalid_delete_order_options = valid_delete_order_options
+          invalid_delete_order_options[:user_token] = "2490vVVFFfffF"
+
+          order = successful_auth_client.delete_order(invalid_delete_order_options)
+
+          expect(successful_auth_client.authorized).to be_truthy
+          expect(successful_auth_client.delivered).to be_truthy
+          expect(order).to eq(unrecognized_user_info_delete)
+        end
+      end
+
+      it 'does not delete order if token does not match user email' do
+        VCR.use_cassette('teachable_client_unsuccessful_delete_order_user_email') do
+          invalid_delete_order_options = valid_delete_order_options
+          invalid_delete_order_options[:user_email] = "fred@fred.com"
+
+          order = successful_auth_client.delete_order(invalid_delete_order_options)
+
+          expect(successful_auth_client.authorized).to be_truthy
+          expect(successful_auth_client.delivered).to be_truthy
+          expect(order).to eq(unrecognized_user_info_delete)
+        end
+      end
+
+      it 'does not delete order if params are missing or invalid' do
+        VCR.use_cassette('teachable_client_unsuccessful_missing_params_delete_order') do
+          order = successful_auth_client.delete_order(user_token: "3kpLtJAd4fBmPsPnmaiZ")
+
+          expect(successful_auth_client.authorized).to be_truthy
+          expect(successful_auth_client.delivered).to be_falsey
+          expect(order).to eq(invalid_delete_params)
         end
       end
     end

@@ -6,19 +6,20 @@ module Teachable
 
       VALID_CONFIG_KEYS      = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
-      DEFAULT_ENDPOINT       = 'http://secure.localhost.com:3000/users'
+      DEFAULT_ENDPOINT       = "http://secure.localhost.com:3000/users"
       CURRENT_USER_ENDPOINT  = "http://secure.localhost.com:3000/api/users/current_user/edit"
       ORDERS_ENDPOINT        = "http://secure.localhost.com:3000/api/orders"
 
-      DEFAULT_METHOD         = :post
-      DEFAULT_USER_AGENT     = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
-      DEFAULT_FORMAT         = :json
-      DEFAULT_DELIVERED      = false
-      DEFAULT_AUTHORIZED     = false
       DEFAULT_HEADERS        = { "Content-Type"  => "application/json",
                                   "Accept"       => "application/json" }
-      DEFAULT_STATUS_MESSAGE = ""
+      DEFAULT_METHOD         = :post
+      DEFAULT_FORMAT         = :json
 
+      DEFAULT_USER_AGENT     = "Teachable Mock API Ruby Gem #{Teachable::Jg::VERSION}".freeze
+      DEFAULT_DELIVERED      = false
+      DEFAULT_AUTHORIZED     = false
+
+      DEFAULT_STATUS_MESSAGE = ""
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml
@@ -37,11 +38,11 @@ module Teachable
       end
 
       def reset
+        self.headers               = DEFAULT_HEADERS
         self.method                = DEFAULT_METHOD
         self.format                = DEFAULT_FORMAT
         self.delivered             = DEFAULT_DELIVERED
         self.status_message        = DEFAULT_STATUS_MESSAGE
-        self.headers               = DEFAULT_HEADERS
         self.authorized            = DEFAULT_AUTHORIZED
       end
 
