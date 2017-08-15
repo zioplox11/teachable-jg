@@ -107,9 +107,7 @@ module Teachable
         end
       end
 
-      def post_to_orders(options)
-        path = endpoint + build_path(options[:registration])
-
+      def post_to_orders(path, options)
         query = {order: {
           "total"                => options[:total],
           "total_quantity"       => options[:total_quantity],
@@ -117,11 +115,21 @@ module Teachable
           "special_instructions" => options[:special_instructions]
         }}
 
+        path_with_params = path + "?user_email=#{options[:user_email]}&user_token=#{options[:user_token]}"
+
         resp = HTTParty.post(
-          path,
+          path_with_params,
           query: query,
           headers: headers
         )
+
+        if resp.code == 200
+          body = process_body(resp.body)
+          self.delivered = true if body["success"]
+          return body
+        else
+          return resp.code
+        end
       end
 
       def create_order(options)
