@@ -107,6 +107,41 @@ module Teachable
         end
       end
 
+      def post_to_orders(options)
+        path = endpoint + build_path(options[:registration])
+
+        query = {order: {
+          "total"                => options[:total],
+          "total_quantity"       => options[:total_quantity],
+          "email"                => options[:email],
+          "special_instructions" => options[:special_instructions]
+        }}
+
+        resp = HTTParty.post(
+          path,
+          query: query,
+          headers: headers
+        )
+      end
+
+      def create_order(options)
+        if authorized
+          path = options[:path] || Teachable::Jg::Configuration::ORDERS_ENDPOINT
+          if options[:total] && !options[:total].nil? &&
+            options[:total_quantity] && !options[:total_quantity].nil? &&
+            options[:email] && !options[:email].nil?
+            resp = post_to_orders(path, options)
+          else
+            self.delivered = false
+            {"success"=>false, "create_order"=>"missing or invalid params"}
+          end
+        else
+          self.delivered = false
+          {"success"=>false, "login"=>"failed to authorize"}
+        end
+
+      end
+
     end # Client
   end
 end

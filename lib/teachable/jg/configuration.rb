@@ -7,6 +7,9 @@ module Teachable
       VALID_CONFIG_KEYS      = VALID_CONNECTION_KEYS + VALID_OPTIONS_KEYS
 
       DEFAULT_ENDPOINT       = 'http://secure.localhost.com:3000/users'
+      CURRENT_USER_ENDPOINT  = "http://secure.localhost.com:3000/api/users/current_user/edit"
+      ORDERS_ENDPOINT        = "http://secure.localhost.com:3000/api/orders"
+
       DEFAULT_METHOD         = :post
       DEFAULT_USER_AGENT     = "Teachable API Ruby Gem #{Teachable::Jg::VERSION}".freeze
       DEFAULT_FORMAT         = :json
@@ -16,7 +19,6 @@ module Teachable
                                   "Accept"       => "application/json" }
       DEFAULT_STATUS_MESSAGE = ""
 
-      CURRENT_USER_ENDPOINT  = "http://secure.localhost.com:3000/api/users/current_user/edit"
 
       # Build accessor methods for every config options so we can do this, for example:
       #   Teachable::Jg.format = :xml

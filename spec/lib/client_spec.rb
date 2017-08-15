@@ -173,7 +173,7 @@ describe Teachable::Jg::Client do
     let(:successful_auth_client) { Teachable::Jg::Client.new(email: "dev-8@example.com", password: "password") }
 
     context "unauthorized" do
-      it "is must be authorizated to make http request" do
+      it "is must be authorized to make http request for user info" do
         VCR.use_cassette('teachable_client_successful') do
           unauthorized_client = successful_auth_client
           unauthorized_client.authorized = false
@@ -224,7 +224,49 @@ describe Teachable::Jg::Client do
         expect(info).to eq(invalid_user_info)
       end
     end
-
   end
 
+  context "orders" do
+    let(:successful_new_order) do
+      { "success"            =>  true,
+      "create_order"         =>  "verified",
+      "total"                =>  "3.00",
+      "total_quantity"       =>  "3",
+      "email"                =>  "dev-6@example.com",
+      "special_instructions" =>  "special instructions foo bar",
+      "order_created"        =>  Time.utc(2000,"jan",1,20,15,1).to_s }
+    end
+
+    let(:valid_order_options) do
+      { total: "3.00",
+      total_quantity: "3",
+      email: "dev-6@example.com",
+      special_instructions:  "special instructions foo bar" }
+    end
+
+    let(:unauthorized_login)     { {"success"    =>false, "login"=>"failed to authorize"} }
+    let(:successful_auth_client) { Teachable::Jg::Client.new(email: "dev-8@example.com", password: "password") }
+
+    context "unauthorized" do
+      it "is must be authorized to make http request for new order" do
+        VCR.use_cassette('teachable_client_successful') do
+          unauthorized_client = successful_auth_client
+          unauthorized_client.authorized = false
+
+          expect(unauthorized_client.authorized).to be_falsey
+          expect(unauthorized_client.create_order(valid_order_options)).to eq(unauthorized_login)
+          expect(unauthorized_client.delivered).to be_falsey
+        end
+      end
+    end
+
+    describe ".create_order" do
+
+
+
+
+    end
+
+
+  end
 end
